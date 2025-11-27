@@ -14,17 +14,23 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
+    const details =
+      exception instanceof CustomError ? exception.details : undefined;
     const status =
       exception instanceof CustomError
         ? exception.code
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message =
+    let message =
       exception instanceof CustomError
         ? exception.message
         : exception instanceof Error
           ? exception.message
           : 'Unexpected error';
+
+    if (Array.isArray(message)) {
+      message = 'Validation error';
+    }
 
     const key =
       exception instanceof CustomError ? exception.key : 'internalServerError';
@@ -32,6 +38,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       message,
       key,
+      details,
     });
   }
 }

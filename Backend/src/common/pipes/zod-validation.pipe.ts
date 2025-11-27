@@ -16,15 +16,15 @@ export class ZodValidationPipe implements PipeTransform {
       const parsedValue = this.schema.parse(value);
       return parsedValue;
     } catch (error: any) {
-      const formattedErrors = error.errors.map((err: any) => ({
+      const formattedErrors = error?.issues?.map((err: any) => ({
         field: err.path.join('.'),
         message: err.message,
       }));
-
       throw new CustomError(
         ErrorCodes.VALIDATION_ERROR,
         ErrorKeys.VALIDATION_ERROR,
-        JSON.stringify(formattedErrors),
+        'Validation failed',
+        formattedErrors,
       );
     }
   }

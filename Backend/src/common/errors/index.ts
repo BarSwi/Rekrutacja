@@ -13,6 +13,7 @@ export class CustomError extends Error {
     public code: ErrorCodes,
     public key: ErrorKeys,
     message?: string,
+    public details?: any,
   ) {
     super(message);
   }

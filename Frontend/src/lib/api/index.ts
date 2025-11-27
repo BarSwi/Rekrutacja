@@ -9,13 +9,14 @@ export function getSingleQuery(name: string) {
   return (id: string) => ({
     queryKey: [name, { id }],
     queryFn: async () => {
-      const response = await customAxios.get(`/${name}/single`, {
+      const response = await customAxios.get(`/${name}/${id}`, {
         params: { id },
       });
       const { data } = response;
 
       return data;
     },
+
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
@@ -32,7 +33,7 @@ export function getPaginatedQuery(
   return (pageIndex: number, rowsPerPage: number) => ({
     queryKey: [`${name}-paginated`, { pageIndex }],
     queryFn: async () => {
-      const { data } = await customAxios.get(`${name}/paginated`, {
+      const { data } = await customAxios.get(`${name}`, {
         params: { page: pageIndex, pageSize: rowsPerPage },
       });
       if (options?.saveCache) {
@@ -42,22 +43,6 @@ export function getPaginatedQuery(
           });
         });
       }
-      return data;
-    },
-    placeholderData: keepPreviousData,
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
-}
-//#endregion
-//#region getUnpopulated
-export function getAllUnpopulatedQuery(name: string) {
-  return () => ({
-    queryKey: [`${name}-options`],
-    queryFn: async () => {
-      const { data } = await customAxios.get(`${name}/options`, {
-        params: {},
-      });
       return data;
     },
 
@@ -71,9 +56,9 @@ export function getAllUnpopulatedQuery(name: string) {
 export function updateMutation(name: string) {
   return (successMessage?: string) => ({
     mutationFn: async (data: any) => {
-      const { id, ...payload } = data.data;
+      const { id, ...payload } = data;
       const response = await customAxios.put(`${name}/${id}`, payload);
-      return response.data;
+      return { id, ...response.data };
     },
     onSuccess: (data: any) => {
       toast.success(successMessage, {
@@ -85,10 +70,8 @@ export function updateMutation(name: string) {
         queryKey: [`${name}-paginated`],
       });
       queryClient.invalidateQueries({
-        queryKey: [`${name}-options`],
+        queryKey: [name, { id: data.id }],
       });
-
-      queryClient.setQueryData([name, { id: data.data.id }], data);
     },
   });
 }
@@ -96,8 +79,8 @@ export function updateMutation(name: string) {
 //#region create
 export function createMutation(name: string) {
   return (successMessage?: string) => ({
-    mutationFn: async (data: { data: any }) => {
-      const response = await customAxios.post(`${name}/create`, data);
+    mutationFn: async (data: any) => {
+      const response = await customAxios.post(`${name}`, { ...data });
       return response.data;
     },
     onSuccess: (data: any) => {
@@ -108,10 +91,9 @@ export function createMutation(name: string) {
       queryClient.invalidateQueries({
         queryKey: [`${name}-paginated`],
       });
-      queryClient.invalidateQueries({
-        queryKey: [`${name}-options`],
-      });
-      queryClient.setQueryData([name, { id: data.data.id }], data);
+      if (data.id) {
+        queryClient.setQueryData([name, { id: data.id }], data);
+      }
     },
   });
 }
@@ -132,25 +114,17 @@ export function deleteMutation(name: string) {
         queryKey: [`${name}-paginated`],
       });
       queryClient.invalidateQueries({
-        queryKey: [`${name}-options`],
-      });
-      queryClient.invalidateQueries({
         queryKey: [name, { id: data.id }],
       });
     },
   });
 }
 //#region Utils
-// const createAuthHeader = async () => {
-//   const JWT = await auth.currentUser.getIdToken();
-//   return { Authorization: `Bearer ${JWT}` };
-// };
 
 //#endregion
 //#region singleItem
 const singleItem = {
   getPaginated: getPaginatedQuery("singleItem", { saveCache: false }),
-  getAllUnpopulated: getAllUnpopulatedQuery("singleItem"),
   getSingle: getSingleQuery("singleItem"),
   create: createMutation("singleItem"),
   update: updateMutation("singleItem"),
@@ -160,7 +134,6 @@ const singleItem = {
 //#region ingredientSelectionGroup
 const estimate = {
   getPaginated: getPaginatedQuery("estimate", { saveCache: false }),
-  getAllUnpopulated: getAllUnpopulatedQuery("estimate"),
   getSingle: getSingleQuery("estimate"),
   create: createMutation("estimate"),
   update: updateMutation("estimate"),

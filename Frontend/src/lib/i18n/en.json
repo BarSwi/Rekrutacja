@@ -12,6 +12,9 @@
       "yes": "Yes",
       "no": "No"
     },
+    "errors": {
+      "internalServerError": "Internal server error."
+    },
     "estimates": {
       "loadError": "Failed to load estimates.",
       "title": "Estimates",

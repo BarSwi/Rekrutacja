@@ -37,7 +37,7 @@ export const EstimatesListPage: React.FC = () => {
   }
 
   const handleCreateEstimate = async (name: string) => {
-    await createMutation.mutateAsync({ data: { name, items: [] } });
+    createMutation.mutate({ name });
     setIsModalOpen(false);
   };
 

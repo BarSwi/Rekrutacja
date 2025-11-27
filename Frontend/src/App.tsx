@@ -9,6 +9,7 @@ import {
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { EstimatesListPage } from "./pages/EstimatesListPage";
 import { EstimateDetailPage } from "./pages/EstimateDetailPage";
+import { Toaster } from "sonner";
 
 export const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <Toaster />
     </QueryClientProvider>
   );
 }

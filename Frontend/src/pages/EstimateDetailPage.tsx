@@ -33,7 +33,6 @@ export const EstimateDetailPage: React.FC = () => {
     api.estimate.getSingle(id || "")
   );
   const estimate = estimateData?.data;
-
   const updateEstimateMutation = useMutation(
     api.estimate.update(t("toasts.estimates.updated"))
   );
@@ -70,11 +69,9 @@ export const EstimateDetailPage: React.FC = () => {
 
   const handleSaveName = async () => {
     if (newName.trim() && newName !== estimate.name) {
-      await updateEstimateMutation.mutateAsync({
-        data: {
-          id: estimate.id,
-          name: newName,
-        },
+      updateEstimateMutation.mutate({
+        id: estimate._id,
+        name: newName,
       });
     }
     setIsEditingName(false);
@@ -85,7 +82,7 @@ export const EstimateDetailPage: React.FC = () => {
   ) => {
     const isMaterial = "quantity" in payload;
 
-    await createItemMutation.mutateAsync({
+    createItemMutation.mutate({
       data: {
         estimateId: estimate.id,
         name: payload.name,
@@ -126,7 +123,7 @@ export const EstimateDetailPage: React.FC = () => {
     if (editingItem) {
       const isMaterial = "quantity" in payload;
 
-      await updateItemMutation.mutateAsync({
+      updateItemMutation.mutate({
         data: {
           id: editingItem.id,
           estimateId: editingItem.estimateId,

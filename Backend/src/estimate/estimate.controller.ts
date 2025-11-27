@@ -12,7 +12,10 @@ import {
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { EstimateService } from './estimate.service';
 import {
+  CreateEstimate,
   CreateEstimateSchema,
+  IdParamsSchema,
+  UpdateEstimate,
   UpdateEstimateSchema,
 } from './schemas/estimate.schema';
 import { PaginationSchema } from '../common/schemas/pagination.schema';
@@ -21,7 +24,7 @@ import { PaginationSchema } from '../common/schemas/pagination.schema';
 export class EstimateController {
   constructor(private readonly estimateService: EstimateService) {}
 
-  @Get('paginated')
+  @Get()
   async getPaginated(
     @Query(new ZodValidationPipe(PaginationSchema))
     pagination: {
@@ -39,5 +42,42 @@ export class EstimateController {
         pageSize: result.pageSize,
       },
     };
+  }
+
+  @Get(':id')
+  async getSingle(
+    @Param(new ZodValidationPipe(IdParamsSchema)) params: { id: string },
+  ) {
+    const { id } = params;
+    const data = await this.estimateService.getSingle(id);
+    return { data };
+  }
+
+  @Put(':id')
+  async update(
+    @Param(new ZodValidationPipe(IdParamsSchema)) params: { id: string },
+    @Body(new ZodValidationPipe(UpdateEstimateSchema))
+    updateEstimateDto: UpdateEstimate,
+  ) {
+    const { id } = params;
+    const data = await this.estimateService.update(id, updateEstimateDto);
+    return { data };
+  }
+
+  @Delete(':id')
+  async delete(
+    @Param(new ZodValidationPipe(IdParamsSchema)) params: { id: string },
+  ) {
+    const { id } = params;
+    const data = await this.estimateService.delete(id);
+    return { data };
+  }
+  @Post()
+  async create(
+    @Body(new ZodValidationPipe(CreateEstimateSchema))
+    createEstimateDto: CreateEstimate,
+  ) {
+    const data = await this.estimateService.create(createEstimateDto);
+    return { data };
   }
 }

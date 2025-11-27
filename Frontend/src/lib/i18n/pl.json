@@ -12,6 +12,9 @@
       "yes": "Tak",
       "no": "Nie"
     },
+    "errors": {
+      "internalServerError": "Internal server error."
+    },
     "estimates": {
       "loadError": "Nie udało się załadować kosztorysów.",
       "title": "Kosztorysy",
