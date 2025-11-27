@@ -15,7 +15,7 @@ export class EstimateRepository {
     pageSize: number,
   ): Promise<{
     data: Array<{
-      id: string;
+      _id: string;
       name: string;
       createdAt: Date;
       items: ISingleItem[];
@@ -37,7 +37,7 @@ export class EstimateRepository {
 
     return {
       data: estimates.map((estimate: any) => ({
-        id: estimate._id,
+        _id: estimate._id,
         name: estimate.name,
         createdAt: estimate.createdAt,
         items: estimate.items || [],

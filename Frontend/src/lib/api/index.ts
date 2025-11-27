@@ -5,7 +5,12 @@ import { customAxios } from "./interceptor";
 import { queryClient } from "../../App";
 
 type ResourceConfig = {
-  baseUrl: string;
+  baseUrl?: string;
+  getSingleUrl?: string;
+  getPaginatedUrl?: string;
+  createUrl?: string;
+  updateUrl?: string;
+  deleteUrl?: string;
   name: string;
   invalidateKeys?: string[];
 };
@@ -31,13 +36,22 @@ const extractParams = (
 };
 
 export function createResource(config: ResourceConfig) {
-  const { baseUrl, name, invalidateKeys = [name] } = config;
+  const {
+    baseUrl = "",
+    name,
+    invalidateKeys = [name],
+    getSingleUrl = baseUrl,
+    getPaginatedUrl = baseUrl,
+    createUrl = baseUrl,
+    updateUrl = baseUrl,
+    deleteUrl = baseUrl,
+  } = config;
 
   return {
     getSingle: (id: string) => ({
       queryKey: [name, { id }],
       queryFn: async () => {
-        const { data } = await customAxios.get(`/${baseUrl}/${id}`);
+        const { data } = await customAxios.get(`/${getSingleUrl}/${id}`);
         return data;
       },
       placeholderData: keepPreviousData,
@@ -48,7 +62,7 @@ export function createResource(config: ResourceConfig) {
     getPaginated: (page: number, pageSize: number) => ({
       queryKey: [`${name}-paginated`, { page }],
       queryFn: async () => {
-        const { data } = await customAxios.get(`/${baseUrl}`, {
+        const { data } = await customAxios.get(`/${getPaginatedUrl}`, {
           params: { page, pageSize },
         });
         return data;
@@ -60,8 +74,8 @@ export function createResource(config: ResourceConfig) {
 
     create: (successMessage?: string) => ({
       mutationFn: async (payload: any) => {
-        const params = extractParams(baseUrl, payload);
-        const url = `/${buildUrl(baseUrl, params)}`;
+        const params = extractParams(createUrl, payload);
+        const url = `/${buildUrl(createUrl, params)}`;
         const { data } = await customAxios.post(url, payload);
         return data;
       },
@@ -76,8 +90,8 @@ export function createResource(config: ResourceConfig) {
     update: (successMessage?: string) => ({
       mutationFn: async (payload: any) => {
         const { id, ...rest } = payload;
-        const params = { ...extractParams(baseUrl, rest), id };
-        const url = `/${buildUrl(baseUrl, params)}/${id}`;
+        const params = { ...extractParams(updateUrl, rest), id };
+        const url = `/${buildUrl(updateUrl, params)}`;
         const { data } = await customAxios.put(url, rest);
         return { id, ...data };
       },
@@ -91,8 +105,10 @@ export function createResource(config: ResourceConfig) {
     }),
 
     delete: (successMessage?: string) => ({
-      mutationFn: async (id: string) => {
-        const { data } = await customAxios.delete(`/${baseUrl}/${id}`);
+      mutationFn: async (payload: any) => {
+        const params = extractParams(deleteUrl, payload);
+        const url = `/${buildUrl(deleteUrl, params)}`;
+        const { data } = await customAxios.delete(url);
         return data;
       },
       onSuccess: () => {
@@ -111,11 +127,15 @@ const estimate = createResource({
   baseUrl: "estimate",
   name: "estimate",
   invalidateKeys: ["estimate-paginated", "estimate"],
+  updateUrl: "estimate/:id",
+  deleteUrl: "estimate/:id",
 });
 //#endregion
 //#region single-item (nested)
 const singleItem = createResource({
-  baseUrl: "estimate/:estimateId/single-item",
+  baseUrl: "estimate/:id/single-item",
+  updateUrl: "estimate/:estimateId/single-item/:itemId",
+  deleteUrl: "estimate/:estimateId/single-item/:itemId",
   name: "singleItem",
   invalidateKeys: ["estimate-paginated", "estimate"],
 });

@@ -20,6 +20,7 @@ export class ZodValidationPipe implements PipeTransform {
         field: err.path.join('.'),
         message: err.message,
       }));
+      console.log(formattedErrors);
       throw new CustomError(
         ErrorCodes.VALIDATION_ERROR,
         ErrorKeys.VALIDATION_ERROR,

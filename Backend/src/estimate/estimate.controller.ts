@@ -23,6 +23,9 @@ import { SingleItemService } from './items/single-item.service';
 import {
   CreateSingleItemDto,
   CreateSingleItemSchema,
+  SingleItemParamsSchema,
+  UpdateSingleItemDto,
+  UpdateSingleItemSchema,
 } from './schemas/single-item.schema';
 import { ObjectId } from 'mongodb';
 @Controller('estimate')
@@ -100,6 +103,41 @@ export class EstimateController {
     const data = await this.singleItemService.create(
       new ObjectId(id),
       createSingleItemDto,
+    );
+    return { data };
+  }
+
+  @Delete(':estimateId/single-item/:itemId')
+  async deleteSingleItem(
+    @Param(new ZodValidationPipe(SingleItemParamsSchema))
+    params: {
+      estimateId: string;
+      itemId: string;
+    },
+  ) {
+    const { estimateId, itemId } = params;
+    const data = await this.singleItemService.delete(
+      new ObjectId(estimateId),
+      new ObjectId(itemId),
+    );
+    return { data };
+  }
+
+  @Put(':estimateId/single-item/:itemId')
+  async updateSingleItem(
+    @Param(new ZodValidationPipe(SingleItemParamsSchema))
+    params: {
+      estimateId: string;
+      itemId: string;
+    },
+    @Body(new ZodValidationPipe(UpdateSingleItemSchema))
+    updateData: UpdateSingleItemDto,
+  ) {
+    const { estimateId, itemId } = params;
+    const data = await this.singleItemService.update(
+      new ObjectId(estimateId),
+      new ObjectId(itemId),
+      updateData,
     );
     return { data };
   }

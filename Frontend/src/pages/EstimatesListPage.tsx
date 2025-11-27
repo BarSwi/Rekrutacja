@@ -20,7 +20,7 @@ export const EstimatesListPage: React.FC = () => {
     isError,
   } = useQuery(api.estimate.getPaginated(0, 100));
   const estimates = listData?.data || [];
-
+  console.log(estimates);
   const createMutation = useMutation(
     api.estimate.create(t("toasts.estimates.created"))
   );
@@ -47,7 +47,7 @@ export const EstimatesListPage: React.FC = () => {
 
   const handleConfirmDelete = () => {
     if (confirmDialog.estimateId) {
-      deleteMutation.mutate(confirmDialog.estimateId);
+      deleteMutation.mutate({ id: confirmDialog.estimateId });
     }
     setConfirmDialog({ isOpen: false });
   };
@@ -85,9 +85,9 @@ export const EstimatesListPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {estimates.map((estimate: any) => (
             <EstimateCard
-              key={estimate.id}
+              key={estimate._id}
               estimate={estimate}
-              onDelete={() => handleDeleteEstimate(estimate.id)}
+              onDelete={() => handleDeleteEstimate(estimate._id)}
               isDeleting={deleteMutation.isPending}
             />
           ))}

@@ -25,7 +25,7 @@ export const EstimateCard: React.FC<EstimateCardProps> = ({
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
       <Link
-        to={`/estimate/${estimate.id}`}
+        to={`/estimate/${estimate._id}`}
         className="flex-1 p-5 text-gray-900 no-underline flex flex-col gap-2"
       >
         <h3 className="text-lg font-semibold text-gray-900 m-0">

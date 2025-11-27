@@ -36,8 +36,8 @@ export const CreateSingleItemSchema = z.discriminatedUnion('type', [
 ]);
 
 export const UpdateSingleItemSchema = z.discriminatedUnion('type', [
-  MaterialSchema.partial(),
-  ServiceSchema.partial(),
+  MaterialSchema.partial().required({ type: true }),
+  ServiceSchema.partial().required({ type: true }),
 ]);
 
 export type CreateSingleItemDto = z.infer<typeof CreateSingleItemSchema>;

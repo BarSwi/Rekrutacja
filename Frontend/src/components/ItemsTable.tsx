@@ -56,7 +56,7 @@ export const ItemsTable: React.FC<ItemsTableProps> = ({
         <tbody>
           {items.map((item, index) => (
             <tr
-              key={item.id}
+              key={item._id}
               className="border-b border-gray-200 hover:bg-gray-50"
             >
               <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
@@ -94,16 +94,16 @@ export const ItemsTable: React.FC<ItemsTableProps> = ({
                   <button
                     className="px-3 py-1 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded disabled:opacity-60 disabled:cursor-not-allowed transition-all"
                     onClick={() => onEdit(item)}
-                    disabled={isDeleting === item.id}
+                    disabled={isDeleting === item._id}
                   >
                     {t("itemsTable.edit")}
                   </button>
                   <button
                     className="px-3 py-1 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded disabled:opacity-60 disabled:cursor-not-allowed transition-all"
-                    onClick={() => onDelete(item.id)}
-                    disabled={isDeleting === item.id}
+                    onClick={() => onDelete(item._id)}
+                    disabled={isDeleting === item._id}
                   >
-                    {isDeleting === item.id ? "..." : t("itemsTable.delete")}
+                    {isDeleting === item._id ? "..." : t("itemsTable.delete")}
                   </button>
                 </div>
               </td>

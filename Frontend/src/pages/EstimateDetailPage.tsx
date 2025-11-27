@@ -27,6 +27,7 @@ export const EstimateDetailPage: React.FC = () => {
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
     itemId?: string;
+    estimateId?: string;
   }>({ isOpen: false });
 
   const { data: estimateData, isLoading } = useQuery(
@@ -83,7 +84,7 @@ export const EstimateDetailPage: React.FC = () => {
     const isMaterial = "quantity" in payload;
 
     createItemMutation.mutate({
-      estimateId: estimate._id,
+      id: estimate._id,
       name: payload.name,
       type: isMaterial ? ItemType.MATERIAL : ItemType.SERVICE,
       ...(isMaterial
@@ -103,13 +104,17 @@ export const EstimateDetailPage: React.FC = () => {
   };
 
   const handleDeleteItem = (itemId: string) => {
-    setConfirmDialog({ isOpen: true, itemId });
+    setConfirmDialog({ isOpen: true, itemId, estimateId: estimate._id });
   };
 
   const handleConfirmDeleteItem = () => {
-    if (confirmDialog.itemId) {
-      deleteItemMutation.mutate(confirmDialog.itemId);
+    if (confirmDialog.itemId && confirmDialog.estimateId) {
+      deleteItemMutation.mutate({
+        itemId: confirmDialog.itemId,
+        estimateId: confirmDialog.estimateId,
+      });
     }
+    console.log(confirmDialog);
     setConfirmDialog({ isOpen: false });
   };
 
@@ -120,7 +125,7 @@ export const EstimateDetailPage: React.FC = () => {
       const isMaterial = "quantity" in payload;
 
       updateItemMutation.mutate({
-        id: editingItem.id,
+        itemId: editingItem._id,
         estimateId: estimate._id,
         name: payload.name,
         type: isMaterial ? ItemType.MATERIAL : ItemType.SERVICE,

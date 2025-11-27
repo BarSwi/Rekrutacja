@@ -13,14 +13,14 @@ export enum Unit {
 }
 
 export interface Estimate {
-  id: string;
+  _id: string;
   name: string;
   createdAt: Date;
   total: number;
 }
 
 export interface EstimateItem {
-  id: string;
+  _id: string;
   estimateId: string;
   type: ItemType;
   name: string;
