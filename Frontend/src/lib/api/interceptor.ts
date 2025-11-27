@@ -1,7 +1,8 @@
 import axios from "axios";
 import { t } from "i18next";
 import { toast } from "sonner";
-const BASE_URL = "http://localhost:8000";
+
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
 export const customAxios = axios.create({
   baseURL: BASE_URL,
