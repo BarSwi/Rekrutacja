@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "./Modal";
+import { UnitSelect } from "./UnitSelect";
 import {
   CreateMaterialPayload,
   CreateServicePayload,
@@ -173,36 +174,12 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                   className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100 disabled:text-gray-600"
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="unit"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  {t("addItemModal.unit")}
-                </label>
-                <select
-                  id="unit"
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value as Unit)}
-                  disabled={isLoading}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100 disabled:text-gray-600"
-                >
-                  <option value={Unit.PCS}>
-                    {t("addItemModal.units.pcs")}
-                  </option>
-                  <option value={Unit.SQM}>
-                    {t("addItemModal.units.sqm")}
-                  </option>
-                  <option value={Unit.CUBM}>
-                    {t("addItemModal.units.cubm")}
-                  </option>
-                  <option value={Unit.MB}>{t("addItemModal.units.mb")}</option>
-                  <option value={Unit.KG}>{t("addItemModal.units.kg")}</option>
-                  <option value={Unit.BAG}>
-                    {t("addItemModal.units.bag")}
-                  </option>
-                </select>
-              </div>
+              <UnitSelect
+                value={unit}
+                onChange={setUnit}
+                disabled={isLoading}
+                translationPrefix="addItemModal"
+              />
             </div>
 
             <div className="flex flex-col gap-2">

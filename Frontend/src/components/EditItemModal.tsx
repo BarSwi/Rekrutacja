@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "./Modal";
+import { UnitSelect } from "./UnitSelect";
 import {
   CreateMaterialPayload,
   CreateServicePayload,
@@ -192,36 +193,12 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                   className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100 disabled:text-gray-600"
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="unit"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  {t("editItemModal.unit")}
-                </label>
-                <select
-                  id="unit"
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value as Unit)}
-                  disabled={isLoading}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100 disabled:text-gray-600"
-                >
-                  <option value={Unit.PCS}>
-                    {t("editItemModal.units.pcs")}
-                  </option>
-                  <option value={Unit.SQM}>
-                    {t("editItemModal.units.sqm")}
-                  </option>
-                  <option value={Unit.CUBM}>
-                    {t("editItemModal.units.cubm")}
-                  </option>
-                  <option value={Unit.MB}>{t("editItemModal.units.mb")}</option>
-                  <option value={Unit.KG}>{t("editItemModal.units.kg")}</option>
-                  <option value={Unit.BAG}>
-                    {t("editItemModal.units.bag")}
-                  </option>
-                </select>
-              </div>
+              <UnitSelect
+                value={unit}
+                onChange={setUnit}
+                disabled={isLoading}
+                translationPrefix="editItemModal"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
