@@ -29,6 +29,19 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
   const [unitPrice, setUnitPrice] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
 
+  const isFormValid = () => {
+    if (!name.trim()) return false;
+
+    if (itemType === ItemType.MATERIAL) {
+      const qty = parseFloat(quantity);
+      const price = parseFloat(unitPrice);
+      return quantity && unitPrice && qty > 0 && price > 0;
+    } else {
+      const price = parseFloat(totalPrice);
+      return totalPrice && price > 0;
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -152,6 +165,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                   id="quantity"
                   type="number"
                   step="0.01"
+                  min="0"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                   placeholder="0"
@@ -202,6 +216,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                 id="unit-price"
                 type="number"
                 step="0.01"
+                min="0"
                 value={unitPrice}
                 onChange={(e) => setUnitPrice(e.target.value)}
                 placeholder={t("addItemModal.pricePlaceholder")}
@@ -222,6 +237,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               id="total-price"
               type="number"
               step="0.01"
+              min="0"
               value={totalPrice}
               onChange={(e) => setTotalPrice(e.target.value)}
               placeholder={t("addItemModal.pricePlaceholder")}
@@ -243,7 +259,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
           <button
             type="submit"
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all"
-            disabled={isLoading || !name.trim()}
+            disabled={isLoading || !isFormValid()}
           >
             {isLoading
               ? t("addItemModal.adding")

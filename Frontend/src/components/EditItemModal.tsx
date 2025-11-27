@@ -32,6 +32,19 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
   const [unitPrice, setUnitPrice] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
 
+  const isFormValid = () => {
+    if (!name.trim()) return false;
+
+    if (itemType === ItemType.MATERIAL) {
+      const qty = parseFloat(quantity);
+      const price = parseFloat(unitPrice);
+      return quantity && unitPrice && qty > 0 && price > 0;
+    } else {
+      const price = parseFloat(totalPrice);
+      return totalPrice && price > 0;
+    }
+  };
+
   useEffect(() => {
     if (item && isOpen) {
       setName(item.name);
@@ -171,6 +184,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                   id="quantity"
                   type="number"
                   step="0.01"
+                  min="0"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                   placeholder="0"
@@ -221,6 +235,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                 id="unit-price"
                 type="number"
                 step="0.01"
+                min="0"
                 value={unitPrice}
                 onChange={(e) => setUnitPrice(e.target.value)}
                 placeholder={t("editItemModal.pricePlaceholder")}
@@ -241,6 +256,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
               id="total-price"
               type="number"
               step="0.01"
+              min="0"
               value={totalPrice}
               onChange={(e) => setTotalPrice(e.target.value)}
               placeholder={t("editItemModal.pricePlaceholder")}
@@ -262,7 +278,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
           <button
             type="submit"
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all"
-            disabled={isLoading || !name.trim()}
+            disabled={isLoading || !isFormValid()}
           >
             {isLoading
               ? t("editItemModal.saving")

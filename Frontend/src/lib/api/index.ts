@@ -15,6 +15,12 @@ type ResourceConfig = {
   invalidateKeys?: string[];
 };
 
+const QUERY_OPTIONS = {
+  placeholderData: keepPreviousData,
+  refetchOnWindowFocus: false,
+  staleTime: Infinity,
+} as const;
+
 const buildUrl = (template: string, params: Record<string, any>): string => {
   let url = template;
   Object.entries(params).forEach(([key, value]) => {
@@ -33,6 +39,12 @@ const extractParams = (
     if (payload[name]) params[name] = payload[name];
   });
   return params;
+};
+
+const invalidateCaches = (invalidateKeys: string[]) => {
+  invalidateKeys.forEach((key) => {
+    queryClient.invalidateQueries({ queryKey: [key] });
+  });
 };
 
 export function createResource(config: ResourceConfig) {
@@ -54,9 +66,7 @@ export function createResource(config: ResourceConfig) {
         const { data } = await customAxios.get(`/${getSingleUrl}/${id}`);
         return data;
       },
-      placeholderData: keepPreviousData,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
+      ...QUERY_OPTIONS,
     }),
 
     getPaginated: (page: number, pageSize: number) => ({
@@ -67,9 +77,7 @@ export function createResource(config: ResourceConfig) {
         });
         return data;
       },
-      placeholderData: keepPreviousData,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
+      ...QUERY_OPTIONS,
     }),
 
     create: (successMessage?: string) => ({
@@ -79,11 +87,9 @@ export function createResource(config: ResourceConfig) {
         const { data } = await customAxios.post(url, payload);
         return data;
       },
-      onSuccess: (data: any) => {
-        toast.success(successMessage, { duration: 5000 });
-        invalidateKeys.forEach((key) => {
-          queryClient.invalidateQueries({ queryKey: [key] });
-        });
+      onSuccess: () => {
+        if (successMessage) toast.success(successMessage, { duration: 5000 });
+        invalidateCaches(invalidateKeys);
       },
     }),
 
@@ -91,31 +97,30 @@ export function createResource(config: ResourceConfig) {
       mutationFn: async (payload: any) => {
         const { id, ...rest } = payload;
         const params = { ...extractParams(updateUrl, rest), id };
-        const url = `/${buildUrl(updateUrl, params)}`;
+        const url = `/${buildUrl(updateUrl, params)}/${id}`;
         const { data } = await customAxios.put(url, rest);
         return { id, ...data };
       },
       onSuccess: (data: any) => {
-        toast.success(successMessage, { duration: 5000 });
-        invalidateKeys.forEach((key) => {
-          queryClient.invalidateQueries({ queryKey: [key] });
-        });
+        if (successMessage) toast.success(successMessage, { duration: 5000 });
+        invalidateCaches(invalidateKeys);
         queryClient.invalidateQueries({ queryKey: [name, { id: data.id }] });
       },
     }),
 
     delete: (successMessage?: string) => ({
       mutationFn: async (payload: any) => {
-        const params = extractParams(deleteUrl, payload);
-        const url = `/${buildUrl(deleteUrl, params)}`;
+        // Support both string ID (flat) and object (nested with params)
+        const id = typeof payload === "string" ? payload : payload.id;
+        const params =
+          typeof payload === "object" ? extractParams(deleteUrl, payload) : {};
+        const url = `/${buildUrl(deleteUrl, params)}/${id}`;
         const { data } = await customAxios.delete(url);
         return data;
       },
       onSuccess: () => {
-        toast.success(successMessage, { duration: 5000 });
-        invalidateKeys.forEach((key) => {
-          queryClient.invalidateQueries({ queryKey: [key] });
-        });
+        if (successMessage) toast.success(successMessage, { duration: 5000 });
+        invalidateCaches(invalidateKeys);
       },
     }),
   };
