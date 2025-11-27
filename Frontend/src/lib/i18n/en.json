@@ -1,0 +1,117 @@
+{
+  "translation": {
+    "common": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "add": "Add",
+      "back": "Back",
+      "loading": "Loading...",
+      "total": "TOTAL:",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "estimates": {
+      "loadError": "Failed to load estimates.",
+      "title": "Estimates",
+      "newButton": "+ New Estimate",
+      "createFirst": "Create your first estimate",
+      "noEstimates": "No estimates",
+      "notFound": "Estimate not found",
+      "deleteTitle": "Delete Estimate",
+      "deleteMessage": "Are you sure you want to delete this estimate?"
+    },
+    "estimateDetail": {
+      "itemsTitle": "Estimate Items",
+      "addItem": "+ Add Item",
+      "editName": "Edit Name",
+      "deleteItemTitle": "Delete Item",
+      "deleteItemMessage": "Are you sure you want to delete this item?"
+    },
+    "createEstimateModal": {
+      "title": "New Estimate",
+      "label": "Estimate Name",
+      "placeholder": "e.g. Bathroom Renovation",
+      "submitButton": "Create",
+      "creating": "Creating..."
+    },
+    "itemsTable": {
+      "noItems": "No items in estimate",
+      "number": "No.",
+      "type": "Type",
+      "name": "Name",
+      "quantity": "Quantity + Unit",
+      "unitPrice": "Unit Price",
+      "value": "Value",
+      "actions": "Actions",
+      "material": "Material",
+      "service": "Service",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteButton": "..."
+    },
+    "addItemModal": {
+      "title": "Add Item",
+      "itemType": "Item Type",
+      "material": "Material",
+      "service": "Service",
+      "name": "Name",
+      "namePlaceholder": "e.g. Porotherm Brick",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "unitPrice": "Unit Price (PLN)",
+      "pricePlaceholder": "0.00",
+      "totalPrice": "Total Price (PLN)",
+      "submitButton": "Add",
+      "adding": "Adding...",
+      "units": {
+        "pcs": "pcs",
+        "sqm": "m²",
+        "cubm": "m³",
+        "mb": "mb",
+        "kg": "kg",
+        "bag": "bag"
+      }
+    },
+    "editItemModal": {
+      "title": "Edit Item",
+      "itemType": "Item Type",
+      "material": "Material",
+      "service": "Service",
+      "name": "Name",
+      "namePlaceholder": "e.g. Porotherm Brick",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "unitPrice": "Unit Price (PLN)",
+      "pricePlaceholder": "0.00",
+      "totalPrice": "Total Price (PLN)",
+      "submitButton": "Save Changes",
+      "saving": "Saving...",
+      "units": {
+        "pcs": "pcs",
+        "sqm": "m²",
+        "cubm": "m³",
+        "mb": "mb",
+        "kg": "kg",
+        "bag": "bag"
+      }
+    },
+    "estimateCard": {
+      "total": "Total:",
+      "deleteTitle": "Delete Estimate"
+    },
+    "toasts": {
+      "estimates": {
+        "created": "Estimate created",
+        "updated": "Estimate updated",
+        "deleted": "Estimate deleted"
+      },
+      "items": {
+        "created": "Item added",
+        "updated": "Item updated",
+        "deleted": "Item deleted"
+      }
+    }
+  }
+}

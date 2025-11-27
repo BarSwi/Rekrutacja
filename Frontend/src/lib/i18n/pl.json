@@ -1,0 +1,117 @@
+{
+  "translation": {
+    "common": {
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "delete": "Usuń",
+      "edit": "Edytuj",
+      "add": "Dodaj",
+      "back": "Powrót",
+      "loading": "Ładowanie...",
+      "total": "RAZEM:",
+      "yes": "Tak",
+      "no": "Nie"
+    },
+    "estimates": {
+      "loadError": "Nie udało się załadować kosztorysów.",
+      "title": "Kosztorysy",
+      "newButton": "+ Nowy kosztorys",
+      "createFirst": "Utwórz pierwszy kosztorys",
+      "noEstimates": "Brak kosztorysów",
+      "notFound": "Kosztorys nie znaleziony",
+      "deleteTitle": "Usuń kosztorys",
+      "deleteMessage": "Czy na pewno chcesz usunąć ten kosztorys?"
+    },
+    "estimateDetail": {
+      "itemsTitle": "Pozycje kosztorysu",
+      "addItem": "+ Dodaj pozycję",
+      "editName": "Edytuj nazwę",
+      "deleteItemTitle": "Usuń pozycję",
+      "deleteItemMessage": "Czy na pewno chcesz usunąć tę pozycję?"
+    },
+    "createEstimateModal": {
+      "title": "Nowy kosztorys",
+      "label": "Nazwa kosztorysu",
+      "placeholder": "np. Remont łazienki",
+      "submitButton": "Utwórz",
+      "creating": "Tworzenie..."
+    },
+    "itemsTable": {
+      "noItems": "Brak pozycji w kosztorysie",
+      "number": "Lp",
+      "type": "Typ",
+      "name": "Nazwa",
+      "quantity": "Ilość + jednostka",
+      "unitPrice": "Cena jedn.",
+      "value": "Wartość",
+      "actions": "Akcje",
+      "material": "Materiał",
+      "service": "Usługa",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "deleteButton": "..."
+    },
+    "addItemModal": {
+      "title": "Dodaj pozycję",
+      "itemType": "Typ pozycji",
+      "material": "Materiał",
+      "service": "Usługa",
+      "name": "Nazwa",
+      "namePlaceholder": "np. Cegła Porotherm",
+      "quantity": "Ilość",
+      "unit": "Jednostka",
+      "unitPrice": "Cena jednostkowa (PLN)",
+      "pricePlaceholder": "0,00",
+      "totalPrice": "Cena całkowita (PLN)",
+      "submitButton": "Dodaj",
+      "adding": "Dodawanie...",
+      "units": {
+        "pcs": "szt",
+        "sqm": "m²",
+        "cubm": "m³",
+        "mb": "mb",
+        "kg": "kg",
+        "bag": "worek"
+      }
+    },
+    "editItemModal": {
+      "title": "Edytuj pozycję",
+      "itemType": "Typ pozycji",
+      "material": "Materiał",
+      "service": "Usługa",
+      "name": "Nazwa",
+      "namePlaceholder": "np. Cegła Porotherm",
+      "quantity": "Ilość",
+      "unit": "Jednostka",
+      "unitPrice": "Cena jednostkowa (PLN)",
+      "pricePlaceholder": "0,00",
+      "totalPrice": "Cena całkowita (PLN)",
+      "submitButton": "Zapisz zmiany",
+      "saving": "Zapisywanie...",
+      "units": {
+        "pcs": "szt",
+        "sqm": "m²",
+        "cubm": "m³",
+        "mb": "mb",
+        "kg": "kg",
+        "bag": "worek"
+      }
+    },
+    "estimateCard": {
+      "total": "Razem:",
+      "deleteTitle": "Usuń kosztorys"
+    },
+    "toasts": {
+      "estimates": {
+        "created": "Kosztorys utworzony",
+        "updated": "Kosztorys zaktualizowany",
+        "deleted": "Kosztorys usunięty"
+      },
+      "items": {
+        "created": "Pozycja dodana",
+        "updated": "Pozycja zaktualizowana",
+        "deleted": "Pozycja usunięta"
+      }
+    }
+  }
+}
