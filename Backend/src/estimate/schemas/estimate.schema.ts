@@ -1,24 +1,14 @@
 import { z } from 'zod';
+import { IdParamsSchema } from '../../common/schemas/id-validator.schema';
 
 export const CreateEstimateSchema = z
   .object({
     name: z.string().min(1).max(255),
   })
   .strip();
-export const IdParamsSchema = z
-  .object({
-    id: z
-      .string()
-      .refine(
-        (val) =>
-          /^[a-f\d]{24}$/.test(val) ||
-          /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/.test(
-            val,
-          ),
-        { message: 'Invalid ID format' },
-      ),
-  })
-  .strip();
+
+export { IdParamsSchema };
+
 export const UpdateEstimateSchema = z
   .object(CreateEstimateSchema.shape)
   .partial();

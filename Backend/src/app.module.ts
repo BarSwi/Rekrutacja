@@ -5,6 +5,8 @@ import { EstimateController } from './estimate/estimate.controller';
 import { EstimateService } from './estimate/estimate.service';
 import { EstimateRepository } from './estimate/estimate.repository';
 import { EstimateMongoSchema } from './models/estimate.mongo.schema';
+import { SingleItemService } from './estimate/items/single-item.service';
+import { SingleItemRepository } from './estimate/items/single-item.repository';
 
 @Module({
   imports: [
@@ -18,6 +20,11 @@ import { EstimateMongoSchema } from './models/estimate.mongo.schema';
     ]),
   ],
   controllers: [EstimateController],
-  providers: [EstimateService, EstimateRepository],
+  providers: [
+    EstimateService,
+    EstimateRepository,
+    SingleItemService,
+    SingleItemRepository,
+  ],
 })
 export class AppModule {}

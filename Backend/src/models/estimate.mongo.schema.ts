@@ -12,7 +12,7 @@ export interface ISingleItem {
   quantity?: number;
   unit?: string;
   unitPrice?: number;
-  totalPrice: number;
+  totalPrice?: number;
 }
 
 export interface IEstimate extends Document {
@@ -21,17 +21,14 @@ export interface IEstimate extends Document {
   createdAt: Date;
 }
 
-const SingleItemSchema = new Schema(
-  {
-    type: { type: String, enum: ['material', 'service'], required: true },
-    name: { type: String, required: true, maxlength: 255 },
-    quantity: { type: Number, required: false },
-    unit: { type: String, required: false },
-    unitPrice: { type: Number, required: false },
-    totalPrice: { type: Number, required: true },
-  },
-  { _id: true },
-);
+const SingleItemSchema = new Schema({
+  type: { type: String, enum: Object.values(ItemType), required: true },
+  name: { type: String, required: true, maxlength: 255 },
+  quantity: { type: Number, required: false },
+  unit: { type: String, required: false },
+  unitPrice: { type: Number, required: false },
+  totalPrice: { type: Number, required: false },
+});
 
 export const EstimateMongoSchema = new Schema(
   {

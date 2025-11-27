@@ -47,7 +47,7 @@ export const EstimatesListPage: React.FC = () => {
 
   const handleConfirmDelete = () => {
     if (confirmDialog.estimateId) {
-      deleteMutation.mutate({ id: confirmDialog.estimateId });
+      deleteMutation.mutate(confirmDialog.estimateId);
     }
     setConfirmDialog({ isOpen: false });
   };

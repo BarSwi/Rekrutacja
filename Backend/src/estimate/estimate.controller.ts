@@ -19,10 +19,18 @@ import {
   UpdateEstimateSchema,
 } from './schemas/estimate.schema';
 import { PaginationSchema } from '../common/schemas/pagination.schema';
-
+import { SingleItemService } from './items/single-item.service';
+import {
+  CreateSingleItemDto,
+  CreateSingleItemSchema,
+} from './schemas/single-item.schema';
+import { ObjectId } from 'mongodb';
 @Controller('estimate')
 export class EstimateController {
-  constructor(private readonly estimateService: EstimateService) {}
+  constructor(
+    private readonly estimateService: EstimateService,
+    private readonly singleItemService: SingleItemService,
+  ) {}
 
   @Get()
   async getPaginated(
@@ -78,6 +86,21 @@ export class EstimateController {
     createEstimateDto: CreateEstimate,
   ) {
     const data = await this.estimateService.create(createEstimateDto);
+    return { data };
+  }
+
+  @Post(':id/single-item')
+  async createSingleItem(
+    @Param(new ZodValidationPipe(IdParamsSchema))
+    params: { id: string },
+    @Body(new ZodValidationPipe(CreateSingleItemSchema))
+    createSingleItemDto: CreateSingleItemDto,
+  ) {
+    const { id } = params;
+    const data = await this.singleItemService.create(
+      new ObjectId(id),
+      createSingleItemDto,
+    );
     return { data };
   }
 }

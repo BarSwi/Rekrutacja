@@ -83,8 +83,45 @@ export const EstimateDetailPage: React.FC = () => {
     const isMaterial = "quantity" in payload;
 
     createItemMutation.mutate({
-      data: {
-        estimateId: estimate.id,
+      estimateId: estimate._id,
+      name: payload.name,
+      type: isMaterial ? ItemType.MATERIAL : ItemType.SERVICE,
+      ...(isMaterial
+        ? {
+            quantity: (payload as CreateMaterialPayload).quantity,
+            unit: (payload as CreateMaterialPayload).unit,
+            unitPrice: (payload as CreateMaterialPayload).unitPrice,
+            totalPrice:
+              (payload as CreateMaterialPayload).quantity *
+              (payload as CreateMaterialPayload).unitPrice,
+          }
+        : {
+            totalPrice: (payload as CreateServicePayload).totalPrice,
+          }),
+    });
+    setIsAddItemModalOpen(false);
+  };
+
+  const handleDeleteItem = (itemId: string) => {
+    setConfirmDialog({ isOpen: true, itemId });
+  };
+
+  const handleConfirmDeleteItem = () => {
+    if (confirmDialog.itemId) {
+      deleteItemMutation.mutate(confirmDialog.itemId);
+    }
+    setConfirmDialog({ isOpen: false });
+  };
+
+  const handleConfirmEditItem = async (
+    payload: CreateMaterialPayload | CreateServicePayload
+  ) => {
+    if (editingItem) {
+      const isMaterial = "quantity" in payload;
+
+      updateItemMutation.mutate({
+        id: editingItem.id,
+        estimateId: estimate._id,
         name: payload.name,
         type: isMaterial ? ItemType.MATERIAL : ItemType.SERVICE,
         ...(isMaterial
@@ -99,49 +136,6 @@ export const EstimateDetailPage: React.FC = () => {
           : {
               totalPrice: (payload as CreateServicePayload).totalPrice,
             }),
-      },
-    });
-    setIsAddItemModalOpen(false);
-  };
-
-  const handleDeleteItem = (itemId: string) => {
-    setConfirmDialog({ isOpen: true, itemId });
-  };
-
-  const handleConfirmDeleteItem = () => {
-    if (confirmDialog.itemId) {
-      deleteItemMutation.mutate({
-        id: confirmDialog.itemId,
-      });
-    }
-    setConfirmDialog({ isOpen: false });
-  };
-
-  const handleConfirmEditItem = async (
-    payload: CreateMaterialPayload | CreateServicePayload
-  ) => {
-    if (editingItem) {
-      const isMaterial = "quantity" in payload;
-
-      updateItemMutation.mutate({
-        data: {
-          id: editingItem.id,
-          estimateId: editingItem.estimateId,
-          name: payload.name,
-          type: isMaterial ? ItemType.MATERIAL : ItemType.SERVICE,
-          ...(isMaterial
-            ? {
-                quantity: (payload as CreateMaterialPayload).quantity,
-                unit: (payload as CreateMaterialPayload).unit,
-                unitPrice: (payload as CreateMaterialPayload).unitPrice,
-                totalPrice:
-                  (payload as CreateMaterialPayload).quantity *
-                  (payload as CreateMaterialPayload).unitPrice,
-              }
-            : {
-                totalPrice: (payload as CreateServicePayload).totalPrice,
-              }),
-        },
       });
       setIsEditItemModalOpen(false);
       setEditingItem(null);
