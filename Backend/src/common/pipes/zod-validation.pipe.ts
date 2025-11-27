@@ -1,0 +1,31 @@
+import {
+  Injectable,
+  PipeTransform,
+  BadRequestException,
+  ArgumentMetadata,
+} from '@nestjs/common';
+import { ZodSchema } from 'zod';
+import { CustomError, ErrorCodes, ErrorKeys } from '../errors';
+
+@Injectable()
+export class ZodValidationPipe implements PipeTransform {
+  constructor(private schema: ZodSchema) {}
+
+  transform(value: unknown, metadata: ArgumentMetadata) {
+    try {
+      const parsedValue = this.schema.parse(value);
+      return parsedValue;
+    } catch (error: any) {
+      const formattedErrors = error.errors.map((err: any) => ({
+        field: err.path.join('.'),
+        message: err.message,
+      }));
+
+      throw new CustomError(
+        ErrorCodes.VALIDATION_ERROR,
+        ErrorKeys.VALIDATION_ERROR,
+        JSON.stringify(formattedErrors),
+      );
+    }
+  }
+}

@@ -4,17 +4,12 @@ import axios from "axios";
 import { customAxios } from "./interceptor";
 import { queryClient } from "../../App";
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.REACT_APP_API_GATEWAY_DEV || "http://localhost:3000"
-    : process.env.REACT_APP_API_GATEWAY_PROD || "https://api.example.com";
-
 //#region getSingle
 export function getSingleQuery(name: string) {
   return (id: string) => ({
     queryKey: [name, { id }],
     queryFn: async () => {
-      const response = await customAxios.get(`${BASE_URL}/${name}/single`, {
+      const response = await customAxios.get(`/${name}/single`, {
         params: { id },
       });
       const { data } = response;
@@ -37,7 +32,7 @@ export function getPaginatedQuery(
   return (pageIndex: number, rowsPerPage: number) => ({
     queryKey: [`${name}-paginated`, { pageIndex }],
     queryFn: async () => {
-      const { data } = await customAxios.get(`${BASE_URL}/${name}/paginated`, {
+      const { data } = await customAxios.get(`${name}/paginated`, {
         params: { page: pageIndex, pageSize: rowsPerPage },
       });
       if (options?.saveCache) {
@@ -60,7 +55,7 @@ export function getAllUnpopulatedQuery(name: string) {
   return () => ({
     queryKey: [`${name}-options`],
     queryFn: async () => {
-      const { data } = await customAxios.get(`${BASE_URL}/${name}/options`, {
+      const { data } = await customAxios.get(`${name}/options`, {
         params: {},
       });
       return data;
@@ -77,10 +72,7 @@ export function updateMutation(name: string) {
   return (successMessage?: string) => ({
     mutationFn: async (data: any) => {
       const { id, ...payload } = data.data;
-      const response = await customAxios.put(
-        `${BASE_URL}/${name}/${id}`,
-        payload
-      );
+      const response = await customAxios.put(`${name}/${id}`, payload);
       return response.data;
     },
     onSuccess: (data: any) => {
@@ -105,10 +97,7 @@ export function updateMutation(name: string) {
 export function createMutation(name: string) {
   return (successMessage?: string) => ({
     mutationFn: async (data: { data: any }) => {
-      const response = await customAxios.post(
-        `${BASE_URL}/${name}/create`,
-        data
-      );
+      const response = await customAxios.post(`${name}/create`, data);
       return response.data;
     },
     onSuccess: (data: any) => {
@@ -131,9 +120,7 @@ export function createMutation(name: string) {
 export function deleteMutation(name: string) {
   return (successMessage?: string) => ({
     mutationFn: async (data: { id: string }) => {
-      const response = await customAxios.delete(
-        `${BASE_URL}/${name}/${data.id}`
-      );
+      const response = await customAxios.delete(`${name}/${data.id}`);
       return response.data;
     },
     onSuccess: (data: any) => {

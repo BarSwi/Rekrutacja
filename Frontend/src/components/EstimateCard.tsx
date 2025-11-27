@@ -20,7 +20,7 @@ export const EstimateCard: React.FC<EstimateCardProps> = ({
   isDeleting = false,
 }) => {
   const { t } = useTranslation();
-  const total = calculateEstimateTotal(estimate.items);
+  const total = estimate.total;
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col">

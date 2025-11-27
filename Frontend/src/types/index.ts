@@ -16,7 +16,7 @@ export interface Estimate {
   id: string;
   name: string;
   createdAt: Date;
-  items: EstimateItem[];
+  total: number;
 }
 
 export interface EstimateItem {
