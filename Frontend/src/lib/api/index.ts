@@ -97,7 +97,7 @@ export function createResource(config: ResourceConfig) {
       mutationFn: async (payload: any) => {
         const { id, ...rest } = payload;
         const params = { ...extractParams(updateUrl, rest), id };
-        const url = `${buildUrl(updateUrl, params)}/${id}`;
+        const url = `${buildUrl(updateUrl, params)}`;
         const { data } = await customAxios.put(url, rest);
         return { id, ...data };
       },
