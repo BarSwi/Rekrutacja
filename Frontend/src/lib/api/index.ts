@@ -63,7 +63,7 @@ export function createResource(config: ResourceConfig) {
     getSingle: (id: string) => ({
       queryKey: [name, { id }],
       queryFn: async () => {
-        const { data } = await customAxios.get(`/${getSingleUrl}/${id}`);
+        const { data } = await customAxios.get(`${getSingleUrl}/${id}`);
         return data;
       },
       ...QUERY_OPTIONS,
@@ -72,7 +72,7 @@ export function createResource(config: ResourceConfig) {
     getPaginated: (page: number, pageSize: number) => ({
       queryKey: [`${name}-paginated`, { page }],
       queryFn: async () => {
-        const { data } = await customAxios.get(`/${getPaginatedUrl}`, {
+        const { data } = await customAxios.get(`${getPaginatedUrl}`, {
           params: { page, pageSize },
         });
         return data;
@@ -83,7 +83,7 @@ export function createResource(config: ResourceConfig) {
     create: (successMessage?: string) => ({
       mutationFn: async (payload: any) => {
         const params = extractParams(createUrl, payload);
-        const url = `/${buildUrl(createUrl, params)}`;
+        const url = `${buildUrl(createUrl, params)}`;
         const { data } = await customAxios.post(url, payload);
         return data;
       },
@@ -97,7 +97,7 @@ export function createResource(config: ResourceConfig) {
       mutationFn: async (payload: any) => {
         const { id, ...rest } = payload;
         const params = { ...extractParams(updateUrl, rest), id };
-        const url = `/${buildUrl(updateUrl, params)}/${id}`;
+        const url = `${buildUrl(updateUrl, params)}/${id}`;
         const { data } = await customAxios.put(url, rest);
         return { id, ...data };
       },
@@ -110,11 +110,9 @@ export function createResource(config: ResourceConfig) {
 
     delete: (successMessage?: string) => ({
       mutationFn: async (payload: any) => {
-        // Support both string ID (flat) and object (nested with params)
-        const id = typeof payload === "string" ? payload : payload.id;
         const params =
           typeof payload === "object" ? extractParams(deleteUrl, payload) : {};
-        const url = `/${buildUrl(deleteUrl, params)}/${id}`;
+        const url = `${buildUrl(deleteUrl, params)}`;
         const { data } = await customAxios.delete(url);
         return data;
       },
