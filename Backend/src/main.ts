@@ -4,7 +4,7 @@ import { AllExceptionsFilter } from './common/errors/all-exception-filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  console.log('CORS ENDPOINTS:', process.env.FRONTEND_URL);
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
